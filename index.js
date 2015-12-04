@@ -4,38 +4,67 @@ var path = require( 'path' );
 var fs = require( 'fs-extra' );
 var url = require( 'url' );
 var yargs = require( 'yargs' );
-
+var async = require( 'async' );
+var request = require('request');
 
 
 
 function getOutPath( outdir, urlstr ) {
 	var parsed = url.parse( urlstr );
-	console.log( "parsed", parsed );
-	return outdir + "name.tgz";
+	return path.join( outdir, parsed.path );
 }
 
 
-function buildNewUrl( newUrl, urlstr ) {
-	return newUrl + "name.tgz";
+function buildNewUrl( newRootUrl, urlstr ) {
+	var parsed = url.parse( urlstr );
+	if ( newRootUrl[ newRootUrl.length-1 ] !== '/' ) {
+		newRootUrl += '/';
+	}
+	var suffix = parsed.path;
+	if ( suffix[0] === '/' ) {
+		suffix = suffix.substr( 1 );
+	}
+	return newRootUrl + suffix;
 }
 
 
-function getFilesToDownload( swjson, newUrl, outdir, output, callback ) {
+function getFilesToDownload( swjson, newRootUrl, outdir, output ) {
+	output = output || [];
 	if ( !swjson.dependencies ) {
-		return;
+		return output;
 	}
 	for ( var name in swjson.dependencies ) {
 		if ( swjson.dependencies.hasOwnProperty( name ) ) {
 			var dep = swjson.dependencies[ name ];
 			if ( dep.resolved ) {
 				var outpath = getOutPath( outdir, dep.resolved );
-				var newUrl = buildNewUrl( newUrl, dep.resolved );
+				var newUrl = buildNewUrl( newRootUrl, dep.resolved );
 				output.push( { url: dep.resolved, out: outpath } );
 				dep.resolved = newUrl;
 			}
-			getFilesToDownload( dep, newUrl, outdir, output, callback );
+			getFilesToDownload( dep, newRootUrl, outdir, output );
 		}
 	}
+	return output;
+}
+
+
+function download( file, callback ) {
+	var dir = path.dirname( file.out );
+	fs.ensureDirSync( dir );
+	console.log( "Downloading " + file.url );
+	request
+		.get( file.url )
+		.on( 'error', function( err ) {
+			callback( err );
+		} )
+		.pipe( fs.createWriteStream( file.out ) )
+		.on( 'error', function( err ) {
+			callback( err );
+		} )
+		.on( 'close', function() {
+			callback();
+		} );
 }
 
 
@@ -76,8 +105,15 @@ function start() {
 
 	options.outdir = path.resolve( options.outdir );
 	fs.ensureDirSync( options.outdir );
-	getFilesToDownload( swjson, options.url, options.outdir, [], function( err ) {
-		fs.writeFileSync( options.outshrinkwrap, JSON.stringify( swjson, null, 2 ) );
+	var files = getFilesToDownload( swjson, options.url, options.outdir );
+	async.eachLimit( files, 4, download, function( err ) {
+		if ( err ) {
+			console.error( "Failed to download" );
+			console.error( err );
+		} else {
+			fs.writeFileSync( options.outshrinkwrap, JSON.stringify( swjson, null, 2 ) );	
+			console.log( "Complete" );
+		}
 	} );
 }
 

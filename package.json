@@ -23,7 +23,9 @@
   },
   "homepage": "https://github.com/peteward44/npm-mirror",
   "dependencies": {
+    "async": "^1.5.0",
     "fs-extra": "^0.26.2",
+    "request": "^2.67.0",
     "yargs": "^3.30.0"
   }
 }
