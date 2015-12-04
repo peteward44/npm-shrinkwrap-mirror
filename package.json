@@ -1,0 +1,29 @@
+{
+  "name": "npm-mirror",
+  "version": "1.0.0",
+  "description": "Inputs a npm-shrinkwrap.json and downloads and replaces all \"resolved\" fields to a http server of your choosing. This allows you to download & cache all npm modules onto your own server - meaning if a package is unpublished from npm's registry you can still install your own hosted copy and your application is not held to the whims of strangers",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/peteward44/npm-mirror.git"
+  },
+  "keywords": [
+    "npm"
+  ],
+  "author": "Pete Ward",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/peteward44/npm-mirror/issues"
+  },
+  "homepage": "https://github.com/peteward44/npm-mirror",
+  "dependencies": {
+    "fs-extra": "^0.26.2",
+    "yargs": "^3.30.0"
+  }
+}
