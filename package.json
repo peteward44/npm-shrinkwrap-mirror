@@ -6,6 +6,10 @@
   "directories": {
     "test": "test"
   },
+  "bin": {
+    "npm-mirror": "./bin/npm-mirror",
+	"npm-mirror.cmd": "./bin/npm-mirror.cmd"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
