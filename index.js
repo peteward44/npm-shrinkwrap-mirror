@@ -1,6 +1,7 @@
 'use strict';
 
 var path = require( 'path' );
+var domain = require( 'domain' );
 var fs = require( 'fs-extra' );
 var url = require( 'url' );
 var yargs = require( 'yargs' );
@@ -50,21 +51,19 @@ function getFilesToDownload( swjson, newRootUrl, outdir, output ) {
 
 
 function download( file, callback ) {
-	var dir = path.dirname( file.out );
-	fs.ensureDirSync( dir );
-	console.log( "Downloading " + file.url );
-	request
-		.get( file.url )
-		.on( 'error', function( err ) {
-			callback( err );
-		} )
-		.pipe( fs.createWriteStream( file.out ) )
-		.on( 'error', function( err ) {
-			callback( err );
-		} )
-		.on( 'close', function() {
-			callback();
-		} );
+	var d = domain.create();
+	d.on( 'error', callback );
+	d.run( function() {
+		var dir = path.dirname( file.out );
+		fs.ensureDirSync( dir );
+		console.log( "Downloading " + file.url );
+		request
+			.get( file.url )
+			.on( 'error', callback )
+			.pipe( fs.createWriteStream( file.out ) )
+			.on( 'error', callback )
+			.on( 'close', callback );
+	} );
 }
 
 
@@ -106,6 +105,9 @@ function start() {
 	options.outdir = path.resolve( options.outdir );
 	fs.ensureDirSync( options.outdir );
 	var files = getFilesToDownload( swjson, options.url, options.outdir );
+	if ( files.length <= 0 ) {
+		console.log( "No dependencies found to download" );
+	}
 	async.eachLimit( files, 4, download, function( err ) {
 		if ( err ) {
 			console.error( "Failed to download" );
