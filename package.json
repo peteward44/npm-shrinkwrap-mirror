@@ -1,31 +1,33 @@
 {
-  "name": "npm-mirror",
+  "name": "npm-shrinkwrap-mirror",
   "version": "1.0.0",
-  "description": "Inputs a npm-shrinkwrap.json and downloads and replaces all \"resolved\" fields to a http server of your choosing. This allows you to download & cache all npm modules onto your own server - meaning if a package is unpublished from npm's registry you can still install your own hosted copy and your application is not held to the whims of strangers",
+  "description": "Similar to npm-mirror, but accepts a shrinkwrap file as input instead - thus creating a simpler interface and is easier to use",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "bin": {
-    "npm-mirror": "./bin/npm-mirror",
-	"npm-mirror.cmd": "./bin/npm-mirror.cmd"
+    "npm-shrinkwrap-mirror": "./bin/npm-shrinkwrap-mirror",
+	"npm-shrinkwrap-mirror.cmd": "./bin/npm-shrinkwrap-mirror.cmd"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/peteward44/npm-mirror.git"
+    "url": "https://github.com/peteward44/npm-shrinkwrap-mirror.git"
   },
   "keywords": [
-    "npm"
+    "npm",
+	"registry",
+	"mirror"
   ],
   "author": "Pete Ward",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/peteward44/npm-mirror/issues"
+    "url": "https://github.com/peteward44/npm-shrinkwrap-mirror/issues"
   },
-  "homepage": "https://github.com/peteward44/npm-mirror",
+  "homepage": "https://github.com/peteward44/npm-shrinkwrap-mirror",
   "dependencies": {
     "async": "^1.5.0",
     "fs-extra": "^0.26.2",
