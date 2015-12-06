@@ -48,6 +48,7 @@ Options:
   --outdir         Output directory to put web server contents  [default: "www"]
   --outshrinkwrap  Outputs modified shrinkwrap file to another file (defaults to modifying input file)
   --url            URL to write into the new shrinkwrap json that will hold the mirrored npm dependencies [required]
+  --downloadLimit  Total number of concurrent downloads to process  [default: 4]
   --help           Show help                                           [boolean]
 ```
 
