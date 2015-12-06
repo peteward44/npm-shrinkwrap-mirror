@@ -64,12 +64,16 @@ For example:
 
 ```
 var mirror = require( 'npm-shrinkwrap-mirror' );
-mirror( {
-	shrinkwrap: "/home/user/my-application/npm-shrinkwrap.json",
-	url: "http://www.myhost.com/my-npm-cache",
-	outdir: "/var/www/my-npm-cache"
-} );
-
+mirror(
+	{
+		shrinkwrap: "/home/user/my-application/npm-shrinkwrap.json",
+		url: "http://www.myhost.com/my-npm-cache",
+		outdir: "/var/www/my-npm-cache"
+	},
+	function( err ) {
+		console.log( "Complete!" );
+	}
+);
 ```
 
 
