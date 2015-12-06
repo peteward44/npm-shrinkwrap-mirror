@@ -49,6 +49,7 @@ Options:
   --outshrinkwrap  Outputs modified shrinkwrap file to another file (defaults to modifying input file)
   --url            URL to write into the new shrinkwrap json that will hold the mirrored npm dependencies [required]
   --downloadLimit  Total number of concurrent downloads to process  [default: 4]
+  --force, -f      Force downloading dependencies that already exist on the file system [default: false]
   --help           Show help                                           [boolean]
 ```
 
