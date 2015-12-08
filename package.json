@@ -1,6 +1,6 @@
 {
   "name": "npm-shrinkwrap-mirror",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Similar to npm-mirror, but accepts a shrinkwrap file as input instead - thus creating a simpler interface and is easier to use. Also does not require a specially-configured web server to host dependency packages.",
   "main": "index.js",
   "directories": {
