@@ -1,5 +1,9 @@
 # npm-shrinkwrap-mirror
 
+# Deprecated
+
+JamieMason/shrinkpack does a much better job than this project. Keeping this here for prosperity
+
 # Purpose
 
 To allow application authors to create their own http caches of npm modules that they depend on - thus protecting themselves against unscrupulous 3rd party authors unpublishing
